@@ -503,8 +503,8 @@ router.post("/place-order", verifyLogin, async (req, res) => {
             payment_method: "paypal",
           },
           redirect_urls: {
-            return_url: "http://localhost:3000/success",
-            cancel_url: "http://localhost:3000/cancel",
+            return_url: "https://arunabh.online/success",
+            cancel_url: "https://arunabh.online/cancel",
           },
           transactions: [
             {
