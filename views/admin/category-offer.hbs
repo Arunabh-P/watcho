@@ -1,0 +1,130 @@
+<div class="main_content_iner overly_inner">
+  <div class="container-fluid bg-white mt-5 p-5" style="border-radius: 25px; ">
+
+    {{! -------------------- }}
+    <div class="card-body">
+
+
+      <div class="d-flex justify-content-end">
+        <div class="row flex-9">
+          <div>
+            <div class="justify-content-end">
+              <a href="/admin/add-category-offer" class="btn btn-success mb-2">Add Category Offer</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+        <table class="table table-responsive-xs table-responsive-sm table-striped table-hover mt-3" id="usersTable" style="border: 1px solid rgb(8, 8, 8);
+   border-radius: 18px;">
+          <thead>
+            <tr>
+              <th>No</th>
+
+              <th>Category</th>
+              <th>Offer</th>
+              {{!-- <th>Expiry</th> --}}
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          {{#each categoryOffer}}
+          <tbody>
+            <tr>
+
+              <td>{{incm @index}}</td>
+              <td>{{this.category}}</td>
+
+              <td>{{this.offer}} %</td>
+              {{!-- <td>{{this.expiry}}</td> --}}
+              <td class="text-end">
+                <a href="/admin/delete-category-offer?id={{this._id}}&cat={{this.category}}" class="btn btn-danger"
+                  onclick="return two(this,event)"><i style="color: rgb(255, 255, 255);"
+                    class="far fa-trash-alt"></i></a>
+              </td>
+
+            </tr>
+          </tbody>
+          {{/each}}
+        </table>
+
+      </div>
+    </div>
+
+    {{! -------------------- }}
+
+  </div>
+</div>
+<script>
+  $(function () { $('#usersTable').dataTable(); });
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+  integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+  integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  function two(url, e) {
+    e.preventDefault()
+    swal({
+      title: "Are you sure?",
+      text: "Once removed, you won't be able to retrive it! ",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+
+        if (willDelete) {
+
+          window.location.href = url.href
+
+
+        } else {
+          swal("your category offer is safe!");
+        }
+      });
+
+
+  }
+</script>
+
+<script>
+
+  var today = new Date(); var dd = String(today.getDate()).padStart(2, '0'); var
+    mm = String(today.getMonth() + 1).padStart(2, '0'); var yyyy =
+      today.getFullYear(); today = yyyy + '-' + mm + '-' + dd;
+  $('#exp_date').attr('min', today); $(document).ready(function () {
+    $('#productname').selectize({ sortField: 'text' });
+  }); let cvalue;
+  $('#pvalue').on('input', function () {
+    this.value =
+    this.value.replace(/[^0-9]/, '').replace(/(\\..*)\./, '$1'); var phone =
+      $(this).val() if (phone.length > 2) {
+        cvalue = false;
+        $("#cvalueerr").html("offer should be less than 99%");
+      } else {
+        cvalue = true;
+      $("#cvalueerr").html(" ");
+    }
+  }) $('#getproducts').on("submit", (e) => {
+    if
+      (cvalue == true) {
+        console.log("api") $.ajax({
+          url:
+            "/admin/productoffer/placeprodoffer", method: "post", data:
+            $("#getproducts").serialize(), success: function (response) {
+              if (response) {
+                // alert("Form submitted successfully") location.reload() } else { } }, error:
+                function (err) { // alert("Something Error") } }) } else {
+                  $("#error-message").html("Fill the Fields");
+                }
+              })
+
+</script>

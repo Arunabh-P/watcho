@@ -1,0 +1,327 @@
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/side-style.css">
+
+
+<style>
+    #CouponMsg {
+        font-size: medium;
+    }
+</style>
+
+<div class="mx-5 d-md-flex align-items-stretch">
+    <!-- Page Content  -->
+
+    <div id="content" class="ml-lg-4">
+
+        <div class="">
+
+            <div class="container">
+                <div class="main-body">
+                    <div class="row gutters-sm">
+                        <div class="col-md-4 mb-3 ">
+                            <div>
+                                <div class="card-body">
+                                    <div class="d-flex flex-column align-items-center text-center">
+                                        <div class="mt-3 pt-5">
+                                            <lottie-player
+                                                src="https://assets2.lottiefiles.com/packages/lf20_uxcmadsr.json"
+                                                background="transparent" speed="1" style="width: 300px; height: 300px;"
+                                                loop autoplay></lottie-player>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="mt-3 row py-3 mr-0     "
+                                style="background-color: rgb(248, 248, 248);  max-width: 45rem;">
+                                <div class="col-5 ">
+                                    <h5>Select address</h5>
+                                </div>
+                                <div class="col-7" style=" display: flex; justify-content: flex-end;">
+                                    <a href="/address" class="btn btn btn-outline-success "
+                                        style="width: fit-content; height: fit-content;">Add address</a>
+                                </div>
+                            </div>
+                            <div class="mt-3 row py-3 mr-0  "
+                                style="background-color: rgb(248, 248, 248);  max-width: 45rem;">
+                                <div class="coupon">
+                                    <h3 id="CouponMsg"></h3>
+                                    <form id="ApplyCoupon" class="container-fluid w-100">
+                                        <div class=" container-fluid d-flex justify-content-between">
+                                            <div class="">
+                                                <input type="text" class=" text-center" name="coupon"
+                                                    style="padding: 7px ; box-sizing: border-box;border: 1px solid red; border-radius: 4px; width: 120px;"
+                                                    placeholder="Enter Code">
+                                            </div>
+
+                                            <div class=""
+                                               >
+                                                <button type="submit" class="btn btn-outline-success "
+                                                    style="width: fit-content; height: fit-content;">Apply Coupon</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <form id="checkout-form" class="w-100">
+                                <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+                                {{#each address}}
+                                <div class="mt-3 row py-3 mr-0  d-flex justify-content-between"
+                                    style="background-color: rgb(248, 248, 248);  max-width: 45rem;">
+
+                                    <div class="col-12 text-end">
+                                        <a id="crossSignPlace" href="/edit-address/{{this._id}}"
+                                            style="text-decoration: none; color: rgb(107, 104, 104); font-size: large;"><i
+                                                class="fa fa-pencil" aria-hidden="true"></i></a>
+                                        <a id="crossSignPlace" href="/delete-address/{{this._id}}"
+                                            style="margin-left: 10px; text-decoration: none; color: rgb(107, 104, 104); font-size: large;">&#10006;</a>
+                                    </div>
+
+                                    <div class="col-12 pl-sm-4" style="margin-left: 10px;">
+
+                                        <input class=" form-check-input" type="radio" name="addressid"
+                                            id="flexRadioDefault1" value="{{this._id}}" checked>
+                                        <h6 class=" text-truncate">{{this.name}}</h6>
+                                        <p class=" text-truncate">{{this.state}}</p>
+                                        <div class="d-flex">
+                                            <p class="">{{this.city}}</p>
+                                            <p class="ms-4">{{this.zip}}</p>
+                                        </div>
+                                        <p>{{this.address}} </p>
+                                        <p class="">{{this.email}}</p>
+                                        <p class="">{{this.mobile}}</p>
+
+                                    </div>
+                                   
+
+
+
+                                </div>
+                                {{/each}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav id="sidebar" class="d-lg-block position-relative  mr-4 mt-3">
+        <div class="p-4  sticky-top ">
+            <div class="mb-5 sticky-top ">
+                <h4>WatchO Fashion Store</h4>
+
+                <h3>hi,<span style="text-transform: capitalize; color: rgb(11, 11, 131);"> {{user.name}}</span></h3>
+                {{!-- <h5>Total <br>Rs. <span id="total">{{total}}</span> <span style="font-size: medium;">only</span>
+                </h5> --}}
+                {{!-- ---------------- --}}
+                <div class="total-payable" style="color: black;">
+                    <div class="payable-price">
+                        <p class="value">total Price:</p>
+                        <p class="price" id="tootal">{{total}}</p>
+
+                    </div>
+                </div>
+                <div class="total-payable" style="color: black;">
+                    <div class="payable-price">
+                        <p class="value"> discount price:</p>
+                        <p class="price" id="coupon">{{discount}}</p>
+
+                    </div>
+                </div>
+                {{#if wallet}}
+                <div class="order-products">
+                    <div class="order-col" style="color: black;">
+                        <div>Wallet Amount</div>
+                        <input type="checkbox" id="wallet" name="checked" onclick="checkWallet('100','{{grandTotal}}')"
+                            value="100" />
+                        <div><strong><i class="fa fa-inr" aria-hidden="true"></i>{{wallet}}</strong></div>
+                    </div>
+                </div>
+                {{/if}}
+                <div class="total-payable" style="color: black;">
+                    <div class="payable-price">
+                        <p class="value">Grand total:</p>
+                        <p class="price" id="total">{{grandTotal}}</p>
+
+                    </div>
+
+                </div>
+
+                {{!-- ---------------- --}}
+
+
+
+
+                <hr>
+                <div class="payment-method">
+                    <div class="input-radio">
+                        <input type="radio" name="payment-method" value="COD" id="payment-1" checked>
+                        <label for="payment-1" style="color: black;">
+                            <span></span>
+                            Cash on Delivery
+                        </label>
+                    </div>
+                    <div class="input-radio">
+                        <input type="radio" name="payment-method" value="ONLINE" id="payment-2">
+                        <label for="payment-2" style="color: black;">
+                            <span></span>
+                            RazorPay Payment
+                        </label>
+                    </div>
+                    <div class="input-radio">
+                        <input type="radio" name="payment-method" value="PAYPAL" id="payment-3">
+                        <label for="payment-3" style="color: black;">
+                            <span></span>
+                            Paypal
+                        </label>
+                    </div>
+                </div>
+                <button type="submit"
+                    class="mt-1 order-submit btn btn-outline-success btn-rounded w-100">Continue</button>
+            </div>
+        </div>
+    </nav>
+    </form>
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        function disableBack() { window.history.forward() }
+
+        window.onload = disableBack();
+        window.onpageshow = function (evt) { if (evt.persisted) disableBack() }
+    });
+</script>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    function checkWallet(wallet, total) {
+        if (document.getElementById('wallet').checked) {
+            let ttotal = parseFloat(total) - parseFloat(wallet)
+            document.getElementById('total').innerHTML = ttotal;
+        } else {
+            document.getElementById('total').innerHTML = total;
+        }
+    }
+
+    $('#ApplyCoupon').submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/applyCoupon',
+            method: 'get',
+            data: $('#ApplyCoupon').serialize(),
+            success: (response) => {
+                if (response.CoupenUsed) {
+                    document.getElementById('CouponMsg').innerHTML = "Coupon Already Used"
+                }
+                else if (response.timeout) {
+                    document.getElementById('CouponMsg').innerHTML = "Coupon expired"
+                }
+                else if (response.Coupon) {
+                    let total = document.getElementById('tootal').innerHTML
+                    console.log(total);
+
+                    document.getElementById('CouponMsg').innerHTML = "Coupon Applied"
+                    document.getElementById("total").innerHTML = total - (response.CoupDiscount * total) / 100
+
+                    document.getElementById("coupon").innerHTML = response.CoupDiscount
+                }
+                else if (response.NoCoupon) {
+                    document.getElementById('CouponMsg').innerHTML = "No Coupon Found"
+                }
+                else if (response.OneCouponUsed) {
+                    document.getElementById('CouponMsg').innerHTML = "Already One Coupon Used"
+                }
+
+            }
+        })
+    })
+</script>
+<script>
+
+
+
+
+
+    $("#checkout-form").submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+                if (response.codSuccess) {
+                    location.href = '/order-success'
+                } else if (response.paypal) {
+                    location.href = response.val
+                }
+                else {
+                    razorpayPayment(response)
+                }
+            }
+        })
+
+    })
+
+    function razorpayPayment(order) {
+
+        var options = {
+            "key": "rzp_test_AKDalr5t5n96hs", // Enter the Key ID generated from the Dashboard
+            "amount": "200", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Watcho",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+
+
+                verifyPayment(response, order)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+    function verifyPayment(payment, order) {
+        $.ajax({
+            url: '/verify-payment',
+            data: {
+                payment,
+                order
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    location.href = '/order-success'
+                } else {
+                    alert('payment failed')
+                }
+            }
+        })
+    }
+
+</script>
+
+
+
+
+<script src="/javascripts/side-bootstrap.min.js"></script>
+<script src="/javascripts/side-jquery.min.js"></script>
+<script src="/javascripts/side-main.js"></script>
+<script src="/javascripts/side-popper.js"></script>

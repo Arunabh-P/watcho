@@ -1,0 +1,112 @@
+  
+ 
+  
+  <div class="main_content_iner overly_inner ">
+  <div class="container-fluid bg-white mt-5  p-5 " style="border-radius: 25px; ">
+    <h2 class="text-center" style="color: black;">WatchO= Products</h2>
+    <div class="d-flex justify-content-end">
+      <div class="row flex-9 ">
+            
+
+        <div >
+
+          <div class="justify-content-end">
+
+            <a href="/admin/add-product" class="btn btn-success">Add Product</a>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="row mt-2">
+
+        <table class="table   table-responsive-xs table-responsive-sm table-responsive-md  table-striped table-hover mt-3" id="usersTable" style="border: 1px solid rgb(17, 17, 17);
+   border-radius: 18px;">
+          <thead>
+            <tr >
+              <th width="5%"scope="col">No</th>
+              <th width="10%" scope="col">Name</th>
+              <th width="20%" scope="col">Description</th>
+              <th width="10%" scope="col">Category</th>
+              <th width="10%" scope="col">Type</th>
+              <th width="10%" scope="col">Price</th>
+              {{!-- <th scope="col">Orginal Price</th>
+              <th scope="col">Discount Price</th> --}}
+              <th width="15%" scope="col">Images</th>
+              <th width="10%" scope="col">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each products}}
+            <tr>
+              <td>{{incm @index}}</td>
+              <td>{{this.name}}</td>
+              <td>{{this.description}}</td>
+              <td>{{this.category}}</td>
+              <td>{{this.subcategory}}</td>
+              <td>{{this.price}}</td>
+              {{!-- <td>{{this.originalPrice}}</td>
+              <td>{{this.discountPrice}}</td> --}}
+               <td><img style="width: 50px; height: 50px;" src="/images/product/{{this._id}}image1.jpg" class="pt-2 card-img-top" alt="...">
+
+                      <img style="width: 50px; height: 50px;" src="/images/product/{{this._id}}image2.jpg" class="pt-2 card-img-top" alt="...">
+                        <img style="width: 50px; height: 50px;" src="/images/product/{{this._id}}image3.jpg" class="pt-2 card-img-top" alt="...">
+                      <img style="width: 50px; height: 50px;" src="/images/product/{{this._id}}image4.jpg" class="pt-2 card-img-top" alt="...">
+                        <img style="width: 50px; height: 50px;" src="/images/product/{{this._id}}image5.jpg" class="pt-2 card-img-top" alt="..."></td>
+              {{!-- <td><img style="width: 50px; height: 50px;"  img src="/images/product-images/{{this._id}}image1.jpg" class="card-img-top" alt="..."></td> --}}
+              <td>
+                <a href="/admin/edit-product/{{this._id}}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                <a style="margin-left: 10px;" href="/admin/delete-product/{{this._id}}" class="btn btn-danger"
+                  onclick="return two(this,event)"><i style="color: rgb(255, 255, 255);" class="far fa-trash-alt"></i></a>
+                  {{#if ProductOffer}}
+                  <h5 class="pt-2">
+                    <button  class="btn btn-success">{{this.offerPercentage}} % OFF</button>
+                  </h5>
+                  {{else}}
+                  <a class="pt-2" href="/admin/add-product-offer/{{this._id}}"  type="submit"> <button type="button" class="btn btn-info">Add Offer</button></a>
+                  
+                  {{/if}}
+                  
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{!-- <a href="{% url 'remove_order' item.id %}" onclick="return two(this,event)"> <button style="border-radius: 20px; background-color: yellow;"  >Remove</button> </a> --}}
+
+      </div>
+  </div>
+</div>
+<script>
+    $(function () {
+        $('#usersTable').dataTable();
+    });
+</script>
+
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+          function two(url,e) {
+              e.preventDefault()
+              swal({
+                  title: "Are you sure?",
+                  text: "Once removed, you won't be able to retrive it! ",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                })
+                .then((willDelete) => {
+                  
+                  if (willDelete) {
+                    
+                    window.location.href= url.href
+               
+      
+                  } else {
+                    swal("your product is safe!");
+                  }
+                });
+      
+      
+      }
+      </script>

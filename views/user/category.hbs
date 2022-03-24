@@ -1,0 +1,188 @@
+
+{{!-- ---------------------------------- --}}
+<style>
+  body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	line-height: 18px;
+	background: #f4f4f4;
+}
+
+.list-wrapper {
+	padding: 15px;
+	overflow: hidden;
+}
+
+.list-item {
+	border: 1px solid #EEE;
+	background: #FFF;
+	margin-bottom: 10px;
+	padding: 10px;
+	box-shadow: 0px 0px 10px 0px #EEE;
+}
+
+.list-item h4 {
+	color: #FF7182;
+	font-size: 18px;
+	margin: 0 0 5px;	
+}
+
+.list-item p {
+	margin: 0;
+}
+
+.simple-pagination ul {
+	margin: 0 0 20px;
+	padding: 0;
+	list-style: none;
+	text-align: center;
+}
+
+.simple-pagination li {
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.simple-pagination li a,
+.simple-pagination li span {
+	color: #666;
+	padding: 5px 10px;
+	text-decoration: none;
+	border: 1px solid #EEE;
+	background-color: #FFF;
+	box-shadow: 0px 0px 10px 0px #EEE;
+}
+
+.simple-pagination .current {
+	color: #FFF;
+	background-color: #FF7182;
+	border-color: #FF7182;
+}
+
+.simple-pagination .prev.current,
+.simple-pagination .next.current {
+	background: #e04e60;
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.js"></script>
+
+
+
+
+{{!-- ////////////////// --}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/side-style.css">
+
+
+
+<div class="mx-5 d-md-flex align-items-stretch">
+
+  <!-- Page Content  -->
+  <div id="content" class=" p-md-5  ml-lg-4">
+    <div class="">
+      <div class="row ">
+
+        {{!-- <h2 class="mb-4">{{cat}}'s Fashion</h2> --}}
+        {{#each product}}
+
+        <div class=" list-wrapper col-md-6 col-sm-6 col-12 col-lg-6 col-xl-4 hide-div justify-content-center ">
+          <div class="list-item cardcss card thumbimg mb-3" style="width: 16rem;  height: 32.5rem; ">
+            <div style="height: 314px; ">
+            <a href="/product/{{this._id}}"><img src="/images/product/{{this._id}}image1.jpg"
+                class="card-img-top" alt="..."></a>
+                </div>
+            <div class="card-body ">
+              <h5 class="brand  card-title text-truncate " style="color: #282c3f; font-weight: 500; font-size: 19px;">{{this.name}}</h5>
+              <p class="card-text text-truncate" style="font-weight: lighter; color: #535766;font-size: 16px ">{{this.description}}</p>
+                  <p class="card-text h5 pb-2" style="font-size: 15.5px; font-weight: 600;">Rs.{{this.price}} {{#if OldPrice}} <span style="font-size: 13px; color: rgb(105, 105, 105);"><strike>Rs.{{this.OldPrice}}</strike></span> <span  style="font-size: 14px; color: rgb(175, 45, 12);">({{this.offerPercentage}}% OFF)</span> {{/if}}</p>
+              <div class="row d-flex">
+                <div class="col d-flex justify-content-between">
+                  <button onclick="addToWishlist('{{this._id}}')" class="btn btn-outline-dark"><i
+                      class="fa-solid fa-heart"></i></button>
+                  <button onclick="addToCart('{{this._id}}')" class="btn btn-outline-dark"><i
+                      class="fa-solid fa-bag-shopping"></i></button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+        {{/each}}
+<div id="pagination-container"></div>
+        
+
+      </div>
+    </div>
+
+  </div>
+  
+
+  <nav id="sidebar" class="d-none d-lg-block position-relative  mr-4">
+    <div class="p-4 pt-5 sticky-top">
+      <h4>WatchO Fashion Store</h4>
+      <br>
+      <ul class="list-unstyled components mb-5 sticky-top">
+        <h3>hi,<span style="text-transform: capitalize; color: rgb(11, 11, 131);"> {{#if
+            user.name}}{{user.name}}{{else}}user{{/if}}</span></h3>
+        <h5>Welcome to our family</h>
+          <li>
+
+            <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">{{cat}}'s
+              Watches</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu1">
+              <li><a href="/product-sub?cat={{cat}}&subCat=Digital"><span class="fa fa-chevron-right mr-2"></span>
+                  Digital Watches</a></li>
+              <li><a href="/product-sub?cat={{cat}}&subCat=Analoge"><span class="fa fa-chevron-right mr-2"></span>
+                  Analoge Watches</a></li>
+            </ul>
+          </li>
+          <h2 class="mb-4">{{cat}}'s Fashion</h2>
+      </ul>
+    </div>
+  </nav>
+</div>
+<script>
+  // jQuery Plugin: http://flaviusmatis.github.io/simplePagination.js/
+
+var items = $(".list-wrapper .list-item");
+    var numItems = items.length;
+    var perPage = 9;
+
+    items.slice(perPage).hide();
+
+    $('#pagination-container').pagination({
+        items: numItems,
+        itemsOnPage: perPage,
+        prevText: "&laquo;",
+        nextText: "&raquo;",
+        onPageClick: function (pageNumber) {
+            var showFrom = perPage * (pageNumber - 1);
+            var showTo = showFrom + perPage;
+            items.hide().slice(showFrom, showTo).show();
+        }
+    });
+</script>
+
+<script src="/javascripts/side-bootstrap.min.js"></script>
+<script src="/javascripts/side-jquery.min.js"></script>
+<script src="/javascripts/side-main.js"></script>
+<script src="/javascripts/side-popper.js"></script>

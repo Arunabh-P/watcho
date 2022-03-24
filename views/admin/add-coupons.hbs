@@ -1,0 +1,191 @@
+<div class="main_content_iner overly_inner ">
+    <div class="container-fluid bg-white mt-5  p-5 " style="border-radius: 25px; ">
+        <section>
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="text-center">Add Coupons</h2>
+                        <form action="/admin/add-coupons" method="post" id="coupon_form" enctype="multipart/form-data">
+                            <div class="row gx-3">
+                            <div class="col-lg-6  mb-6">
+                            <label class="form-label">Coupon Code</label>
+                            <input class="form-control" id="form_couponcode" name="couponcode" type="text"
+                                placeholder="Type here">
+<h5 class="error_form text-danger" id="couponcode_error_message"></h5>
+
+                            <p id="ccodeerr" class="text-danger"></p>
+                        </div> <!-- col .// -->
+
+                        <div class="col-6 mb-6">
+                        <label class="form-label">Discount %</label>
+                        <input class="form-control" id="pvalue" name="discount" type="number" placeholder="Type here"/>
+    <h5 class="error_form text-danger" id="discount_error_message"></h5>
+                      <p id="cvalueerr" class="text-danger"></p>
+                    </div>
+                        <div class="col-lg-12  mb-6">
+                            <label class="form-label">Coupon description</label>
+                            <input class="form-control" id="form_description" name="description" type="text"
+                                placeholder="Type here">
+    <h5 class="error_form text-danger" id="description_error_message"></h5>
+                            <p id="cdeserr" class="text-danger"></p>
+
+                        </div>
+                        <div class="col-lg-6 mb-6">
+              <label class="form-label">Expiry</label>
+              <input class="form-control" id="form_expiry" name="expiry"  type="date"  />
+    <h5 class="error_form text-danger" id="expiry_error_message"></h5>
+            </div>
+                            <button type="submit" class="btn btn-success mt-4 ">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+     var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    $('#form_expiry').attr('min', today);
+
+    $(document).ready(function () {
+        $('#productname').selectize({
+            sortField: 'text'
+        });
+    });
+    let cvalue;
+    $('#pvalue').on('input', function () {
+        this.value = this.value.replace(/[^0-9]/, '').replace(/(\..*)\./, '$1');
+        var phone = $(this).val()
+        if (phone.length > 2) {
+            cvalue = false;
+            $("#cvalueerr").html("offer should be less than 99%");
+
+        } else {
+            cvalue = true;
+            $("#cvalueerr").html(" ");
+
+        }
+    })
+
+function validate(){
+              var phone = $('#pvalue').val()
+              if (parseInt(phone) > 99) {
+                  cvalue = false;
+                  $("#cvalueerr").html("offer should be less than 99%");
+                  return false;
+              } else {
+                  cvalue = true;
+                  $("#cvalueerr").html(" ");
+                  return true;
+              }
+          }
+
+
+
+</script>
+
+
+<script type="text/javascript">
+$("#couponcode_error_message").hide()
+$("#description_error_message").hide()
+$("#discount_error_message").hide()
+var error_couponcode=false;
+var error_description=false;
+var error_discount=false;
+
+
+
+
+   $("#form_couponcode").focusout(function(){
+            check_couponcode();
+         });
+         
+         $("#form_description").focusout(function() {
+           check_description()
+         });
+         $("#pvalue").focusout(function() {
+            check_price();
+         });
+         
+         
+         
+         
+         function check_couponcode() {
+            var pattern = /^[a-zA-Z" "0-9]*$/;
+            var pname = $("#form_couponcode").val();
+            if (pattern.test(pname) && pname !== '') {
+               $("#couponcode_error_message").hide();
+               $("#form_couponcode")
+            } else {
+               $("#couponcode_error_message").html("Please enter the coupon code");
+               $("#couponcode_error_message").show();
+               $("#form_couponcode")
+               error_couponcode = true;
+            }
+         }
+           function check_description() {
+            var pattern = /^[a-zA-Z " "0-9]*$/;
+            var description = $("#form_description").val()
+            if (pattern.test(description) && description !== '') {
+               $("#description_error_message").hide();
+               $("#form_description")
+            } else {
+               $("#description_error_message").html("Please enter the description");
+               $("#description_error_message").show();
+               $("#form_description")
+               error_description = true;
+            }
+         }
+       
+          function check_discount() {
+            var pattern = /^[0-9]+$/
+            var discount= $("#pvalue").val();
+            if (pattern.test(discount) && discount !== '') {
+               $("#discount_error_message").hide();
+               $("#pvalue")
+            } else {
+               $("#discount_error_message").html("Please enter the discount");
+               $("#discount_error_message").show();
+               $("#pvalue")
+               error_discount = true;
+            }
+         }
+
+         
+         
+         
+
+        
+
+         $("#coupon_form").submit(function() {
+          error_couponcode=false;
+           error_description=false;
+           error_discount=false;
+
+           
+           
+
+            check_couponcode()
+            check_description()
+            check_discount()
+
+             
+            
+            if (error_couponcode=== false &&  error_description === false && error_discount === false ) {
+               return true;
+            } else {
+              
+               swal("Oops!", "Please fill the Details!", "error");  
+               return false;
+            }
+         });
+     
+
+
+</script>

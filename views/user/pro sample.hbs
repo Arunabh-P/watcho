@@ -1,0 +1,230 @@
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/side-style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<style>
+    .image-container {
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+
+.thumbnail-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.thumb {
+  margin-bottom: 5px;
+  width: 75px;
+}
+
+.thumb:hover {
+  -moz-box-shadow: 0 0 5px orange;
+  -webkit-box-shadow: 0 0 5px orange;
+  box-shadow: 0 0 5px orange;
+}
+
+.preview {
+  display: none;
+  margin-left: 85px;
+  width: 400px;
+  height: 550px;
+}
+
+
+
+
+</style>
+
+<div class="mx-5 d-md-flex align-items-stretch">
+  <!-- Page Content  -->
+
+  <div id="content" class="ml-lg-4">
+
+    <div class="">
+
+      <div class="container">
+        <div class="main-body">
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div>
+                <div class="card-body">
+                  <div
+                    class="d-flex flex-column align-items-center text-center"
+                  >
+                    <div class="mt-3 pt-5">
+
+<lottie-player src="https://assets7.lottiefiles.com/packages/lf20_ltuxwdw4.json"  background="transparent"  speed="1"  style="width: 300px; height: 300px;"  loop  autoplay></lottie-player>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+
+              {{!-- <div
+                class="row py-3 mr-0  mt-5"
+                style="background-color: rgb(248, 248, 248);  max-width: 45rem;"
+              >
+
+                <div class="col-9">
+                  <h5>Change New Password</h5>
+
+                </div>
+              </div> --}}
+              
+              <div
+                class="mt-3 row py-3 mr-0 mb-3  d-flex justify-content-between"
+                style="background-color: rgb(248, 248, 248);  max-width: 45rem;"
+              >
+
+
+
+
+
+              <div class="image-container">
+  <div class="thumbnail-container">
+      
+    <img class="thumb ml-5" alt="thumbnail" src="/images/product/{{product._id}}image1.jpg">
+    <img class="thumb ml-5" alt="thumbnail" src="/images/product/{{product._id}}image2.jpg">
+    <img class="thumb ml-5" alt="thumbnail" src="/images/product/{{product._id}}image3.jpg">
+    <img class="thumb ml-5" alt="thumbnail" src="/images/product/{{product._id}}image4.jpg">
+    <img class="thumb ml-5" alt="thumbnail" src="/images/product/{{product._id}}image5.jpg">
+
+  </div>
+  <div class="detail">
+   <section>
+  <div class="cursor-overlay"></div>
+
+  <div class="preview"></div>
+
+      <h3 class="ml-5 mt-5">{{product.name}}</h3>
+      <p class="ml-5 mt-4">{{product.description}}</p>
+      <p class="ml-5">{{product.category}} Watches</p>
+      <p class="ml-5">{{product.subcategory}}</p>
+      {{#if product.OldPrice}}
+      <p class="ml-5">{{product.OldPrice}} Rs.</p>
+      <p style="color: rgb(226, 3, 3); font-size: large;" class="ml-5">Now you get on {{product.price}} Rs. Enjoy!</p>
+{{else}}
+<p class="ml-5">{{product.price}} Rs. only</p>
+{{/if}}
+
+      {{!-- <h4>$XX.XX <button>Add to Cart</button></h4> --}}
+    </section>
+  </div>
+</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav id="sidebar" class="d-none d-lg-block position-relative  mr-4 mt-3">
+        <div class="p-4 pt-5 sticky-top mt-5">
+            <div class="mb-5 sticky-top ">
+                <h4>WatchO Fashion Store</h4>
+                <h3>hi,<span style="text-transform: capitalize; color: rgb(11, 11, 131);"> {{user.name}}</span></h3>
+                <h5>It’s your time</h5>
+                {{#if user}}
+                <button onclick="addToCart('{{product._id}}')" class="btn btn btn-outline-success w-100">Add to
+                    cart</button>
+                <button onclick="addToWishlist('{{product._id}}')" class="btn btn btn-outline-success w-100 mt-2">Add to
+                    wishlist</button>
+                    {{else}}
+                    <a href="/login"><button class="btn btn btn-outline-success w-100">Add to
+                    cart</button></a>
+                <a href="/login"><button class="btn btn btn-outline-success w-100 mt-2">Add to
+                    wishlist</button></a>
+                    {{/if}}
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+
+
+<script>
+    const ZOOM_LEVEL = 2;
+
+$(document).ready(function() {
+  $(".thumb").mouseenter(enter);
+  $(".thumb").mouseleave(leave);
+  $('.thumb').mousemove(zoom);
+});
+
+function zoom(event) {
+  const p = calculateZoomOverlay({x: event.pageX, y: event.pageY}, $(event.target));
+  moveCursorOverlay(p.left, p.top);
+  movePreviewBackground(p.offsetX, p.offsetY);
+}
+
+function calculateZoomOverlay(mouse, thumb) {
+  let t = thumb.position();
+  t.width = thumb.width();
+  t.height = thumb.height();
+
+  let z = {}; // Zoom overlay
+  z.width = t.width / ZOOM_LEVEL;
+  z.height = t.height / ZOOM_LEVEL;
+  z.top = mouse.y - z.height / 2;
+  z.left = mouse.x - z.width / 2;
+  
+  // Bounce off boundary
+  if (z.top < t.top) z.top = t.top;
+  if (z.left < t.left) z.left = t.left;
+  if (z.top + z.height > t.top + t.height) z.top = t.top + t.height - z.height;
+  if (z.left + z.width > t.left + t.width) z.left = t.left + t.width - z.width;
+
+  z.offsetX = (z.left - t.left) / z.width * 100;
+  z.offsetY = (z.top - t.top) / z.height * 100;
+
+  return z;
+}
+
+function moveCursorOverlay(left, top) {
+   $('.cursor-overlay').css({
+    top: top,
+    left: left
+  });
+}
+
+function movePreviewBackground(offsetX, offsetY) {
+  $('.preview').css({
+    'background-position': offsetX + '% ' + offsetY + '%'
+  });
+}
+
+function enter() {
+  // Setup preview image
+  const imageUrl = $(this).attr('src');
+  const backgroundWidth = $('.preview').width() * ZOOM_LEVEL;
+  $('.preview').css({
+    'background-image': `url(${imageUrl})`,
+    'background-size': `${backgroundWidth} auto`
+  });
+  $('.preview').show();
+
+  $('.cursor-overlay').width($(this).width() / ZOOM_LEVEL);
+  $('.cursor-overlay').height($(this).height() / ZOOM_LEVEL);
+  $('.cursor-overlay').show();
+}
+
+function leave() {
+  $('.preview').hide();
+  $('.cursor-overlay').hide();
+}
+
+</script>
+
+
+<script src="/javascripts/side-bootstrap.min.js"></script>
+<script src="/javascripts/side-jquery.min.js"></script>
+<script src="/javascripts/side-main.js"></script>
+<script src="/javascripts/side-popper.js"></script>
+

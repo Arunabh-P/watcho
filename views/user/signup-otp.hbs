@@ -1,0 +1,94 @@
+<section class="main">
+    <div class="layer ">
+
+        <div class="bottom-grid ">
+            <div class="logo">
+                <h1> <a href="/">WatchO=</a></h1>
+            </div>
+            <div class="links">
+                <ul class="links-unordered-list">
+                    <li>
+                        <h1 style="color: rgb(163, 161, 161);">Don't Have an Account? </h1>
+                        {{!-- <a href="#" class="">Don't Have an Account? </a> --}}
+                    </li>
+                    <li class="active">
+                        <a href="/signup" class="">Register here</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-w3ls ">
+            <div class="content-bottom">
+                <form action="/signup-otp" method="post">
+
+                    
+         
+					<input type="hidden" name="name" value="{{data.name}}">
+					<input type="hidden" name="gender" value="{{data.gender}}">
+					<input type="hidden" name="mobile" value="{{data.mobile}}">
+					<input type="hidden" name="email" value="{{data.email}}">
+					<input type="hidden" name="password" value="{{data.password}}">
+
+
+
+                    <div class="field-group">
+                        <span class="fa fa-user" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="otp" id="text1" type="text" value="" placeholder="Enter OTP" required>
+                        </div>
+                    </div>
+                     <div id="timer-div" style="color: white;">Time left = <span id="timer"></span></div>
+
+                     <div class="wthree-field" >
+                        <button id="resendBtn" style="display: none;" onclick="reload()" type="button" class="btn">Resent OTP</button>
+                    </div>
+                     
+                    <div class="wthree-field">
+                        <button id="submitBtn" type="submit" class="btn">Submit</button>
+                    </div>
+                    
+                   
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    let timerOn = true;
+
+function timer(remaining) {
+  var m = Math.floor(remaining / 60);
+  var s = remaining % 60;
+  
+  m = m < 10 ? '0' + m : m;
+  s = s < 10 ? '0' + s : s;
+  document.getElementById('timer').innerHTML = m + ':' + s;
+  remaining -= 1;
+  
+  if(remaining >= 0 && timerOn) {
+    setTimeout(function() {
+        timer(remaining);
+    }, 1000);
+    return;
+  }
+
+  if(!timerOn) {
+    // Do validate stuff here
+    return;
+  }
+  
+  // Do timeout stuff here
+  document.getElementById('timer').innerHTML="";
+    document.getElementById('timer-div').innerHTML = "Timeout. Please click resend button to get new OTP"
+    document.getElementById('resendBtn').style.display='block'
+    document.getElementById('submitBtn').style.display='none'
+}
+
+function reload(){
+    location.reload();
+}
+
+timer(120);
+</script>

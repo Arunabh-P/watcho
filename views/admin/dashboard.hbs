@@ -1,0 +1,125 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="main_content_iner overly_inner">
+   
+   <div class="container-fluid bg-white mt-5 p-5" style="border-radius: 25px; ">
+      <div class="container">
+        <div class="mt-5 d-flex">
+            <div class="col-md-3 d-flex"
+               style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
+               <div class="w-75 pt-2">Total Profit<br /><b>₹ {{tot}}</b></div>
+               <div class="w-25"><img class="pt-2" style="width: 45px;" src="/images/profits.png" alt="" /></div>
+            </div>
+            <div class="col-md-3 ml-2 d-flex"
+               style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
+               <div class="w-75 pt-2">Orders Delivered<br /><b>{{totalDeliveredOrders}}</b></div>
+               <div style="height: 60px;width: 60px;" class="w-25"><img class="pt-2" style="width: 45px;"
+                  src="/images/cargo.png" alt="" /></div>
+            </div>
+            <div class="col-md-3 ml-2 d-flex"
+               style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
+               <div class="w-75 pt-2">Total Products<br /><b>{{proCount}}</b></div>
+               <div style="height: 60px;width: 60px;" class="w-25"><img class="pt-2" style="width: 45px;"
+                  src="/images/box.png" alt="" /></div>
+            </div>
+            <div class="col-md-3 ml-2 d-flex"
+               style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
+               <div class="w-75 pt-2">Total Users<br /><b>{{totUsers}}</b></div>
+               <div style="height: 60px;width: 60px;" class="w-25"><img class="pt-2" style="width: 45px;"
+                  src="/images/users.png" alt="" /></div>
+            </div>
+            
+         </div>
+
+         <div class="d-flex justify-content-center" style="margin-top: 50px;">
+
+        <div class="col-md-4 ml-2 d-flex">
+
+            <div class="chart-container" style="position: relative; height:30vh; width:30vw;">
+                <div class="text-center pb-3"><h3>Delivered Products</h3></div>
+                <div>
+                 <canvas id="chart" style=" box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 ml-5 d-flex">
+
+
+            <div class="chart-container" style="position: relative; height:65vh; width:65vw;">
+                <div class="text-center pb-3"><h3>Products</h3></div>
+                <div>
+                <canvas id="myChart"  style=" box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;"></canvas>
+                </div>
+            </div>
+        </div>
+      </div>
+   </div>
+</div>
+<script>
+    var ctx = document.getElementById('myChart');
+    let xdata=[];
+    let ydata=[];
+
+    {{#each chart}}
+        xdata.push('{{this._id}}')
+        ydata.push('{{this.count}}')
+    {{/each}}
+
+    console.log(xdata)
+
+    let xvalues = [...xdata];
+    let yvalues = [...ydata];
+
+        var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: xvalues,
+            datasets: [{
+                label: 'Products',
+                data: yvalues,
+                backgroundColor: [
+                    '##FF5733',
+                    '#C70039',
+                    '#900C3F',
+                    '#581845 ',
+                    
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+</script>
+<script>
+   var cdx = document.getElementById('chart'); var chart = new Chart(cdx, {
+     type:
+       'pie', data: {
+         labels: ['{{sales.0.status}}', '{{sales.1.status}}', '{{sales.2.status}}'],
+         datasets: [{ label: '# of Votes', data: [{{ sales.0.total }},
+         {{ sales.1.total }},{{ sales.2.total }}], backgroundColor: ['#F53C3C ', '#FFA833',
+           '#FF5733 ',], borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)',
+             'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)',
+             'rgba(255, 159, 64, 1)'], borderWidth: 1 }] }, options: {
+               scales: {
+                 yAxes: [{
+                   ticks: { beginAtZero: true }
+                 }]
+               }
+             } });
+</script>

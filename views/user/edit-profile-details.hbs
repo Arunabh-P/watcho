@@ -1,0 +1,165 @@
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/side-style.css">
+
+<div class="mx-5 d-md-flex align-items-stretch">
+    <!-- Page Content  -->
+    <div id="content" class="p-4 p-md-5 pt-5 ml-lg-4">
+        <div class="mt-5">
+            <div class="mt-3 row py-3 mr-0 ml-auto" style="background-color: rgb(248, 248, 248);  max-width: 45rem;">
+                <form class="mb-0" id="registration_form" method="post" action="/edit-profile-details">
+
+                    <input type="hidden" name="id" id="form9Example1" class="form-control input-custom"
+                        value="{{user._id}}" />
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <input placeholder="Name" type="text" name="name" id="form_name"
+                                    class="form-control input-custom" value="{{user.name}}" />
+							 <span style="color: red;" class="error_form" id="name_error_message"></span>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <input placeholder="Mobile" type="text" name="mobile" id="form_mob"
+                                    class="form-control input-custom" value="{{user.mobile}}" />
+                                    <span  style="color: red;" class="error_form" id="mob_error_message"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <input placeholder="Email" id="form_email" type="email" name="email"
+                                    class="form-control input-custom" value="{{user.email}}" />
+                                    <span  style="color: red;" class="error_form" id="email_error_message"></span>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+
+
+                    <div class="float-end ">
+                        <!-- Submit button -->
+                        <button type="submit" class="btn btn-outline-success btn-rounded">Update</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+    <nav id="sidebar" class="d-none d-lg-block position-relative  mr-4 mt-3">
+        <div class="p-4 pt-5 sticky-top mt-5">
+            <div class="mb-5 sticky-top ">
+                <h4>WatchO Fashion Store</h4>
+
+                <h3>hi,<span style="text-transform: capitalize; color: rgb(11, 11, 131);"> {{user.name}}</span></h3>
+                <h5>please Enter your details </h5>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+
+<script src="/javascripts/side-bootstrap.min.js"></script>
+<script src="/javascripts/side-jquery.min.js"></script>
+<script src="/javascripts/side-main.js"></script>
+<script src="/javascripts/side-popper.js"></script>
+<script type="text/javascript">
+$("#name_error_message").hide()
+$("#email_error_message").hide()
+$("#mob_error_message").hide()
+
+
+var error_name=false;
+var error_email=false;
+var error_mobno=false;
+
+
+   		 $("#form_name").focusout(function(){
+            check_name();
+         });
+         $("#form_email").focusout(function() {
+            check_email();
+         });
+         $("#form_mob").focusout(function() {
+            check_mob();
+         });
+		
+         function check_name() {
+            var pattern = /^[a-zA-Z]*$/;
+            var name = $("#form_name").val();
+            if (pattern.test(name) && name !== '') {
+               $("#name_error_message").hide();
+               $("#form_name")
+            } else {
+               $("#name_error_message").html("Should contain only Characters");
+               $("#name_error_message").show();
+               $("#form_name")
+               error_name = true;
+            }
+         }
+		
+
+         function check_email() {
+            var pattern = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            var email = $("#form_email").val();
+            if (pattern.test(email) && email !== '') {
+               $("#email_error_message").hide();
+               $("#form_email")
+            } else {
+               $("#email_error_message").html("Invalid Email");
+               $("#email_error_message").show();
+               $("#form_email")
+               error_email = true;
+            }
+         }
+          function check_mob() {
+            var pattern = /([0-9]{10})|(\([0-9]{3}\)\s+[0-9]{3}\-[0-9]{4})/;
+            var mob= $("#form_mob").val();
+            if (pattern.test(mob) && mob !== ''&&mob.length==10) {
+               $("#mob_error_message").hide();
+               $("#form_mob")
+            } else {
+               $("#mob_error_message").html("Invalid Mobile NO");
+               $("#mob_error_message").show();
+               $("#form_mob")
+               error_mobno = true;
+            }
+         }
+
+         $("#registration_form").submit(function() {
+            error_name = false;
+            error_email = false;
+            error_mobno=false;
+
+            check_name();
+            check_email();
+             check_mob();
+
+            if (error_name === false  && error_email === false &&error_mobno===false) {
+               
+               return true;
+            } else {
+           swal("Oops!", "Please fill the Details!", "error");  
+               return false;
+        }
+         });
+     
+
+
+</script>

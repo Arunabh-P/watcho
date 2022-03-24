@@ -1,0 +1,238 @@
+<div class="main_content_iner overly_inner">
+  <div class="container-fluid bg-white mt-5 p-5" style="border-radius: 25px; ">
+    <div class="container mt-4">
+    <h2 class="text-center" style="color: black;">WatchO= Products</h2>
+
+    <div class="d-flex justify-content-end">
+
+      <div class="row flex-9">
+
+        <div>
+
+          <div class="justify-content-end">
+
+            <a href="/admin/add-product" class="btn btn-success">Add Product</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+
+      <table
+        class="table  table-responsive table-responsive-xs table-responsive-sm table-responsive-md table-striped table-hover mt-3"
+        id="usersTable"
+        style="border: 1px solid rgb(0, 0, 0);
+   border-radius: 18px;
+ "
+      >
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">User</th>
+
+            <th scope="col">date</th>
+            <th scope="col">Address</th>
+            <th scope="col">Mobile</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each allOrders}}
+            <tr>
+              <td>{{incm @index}}</td>
+              <td>{{this.deliveryDetails.name}}</td>
+
+              <td>{{this.date}}</td>
+              <td>{{this.deliveryDetails.address}}</td>
+              <td>{{this.deliveryDetails.mobile}}</td>
+              <td> Rs. {{this.totalAmount}}</td>
+              <td>{{this.paymentMethod}}</td>
+              {{#if this.status}}
+                <td>
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-primary dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      {{this.status}}
+                    </button>
+                    <div class="dropdown-menu">
+                      <a
+                        style="color: rgb(5, 88, 94);"
+                        class="dropdown-item"
+                        href="/admin/status-change?status=proccessing&id={{this._id}}"
+                      >Proccessing</a>
+                      {{!-- <a
+                        style="color: rgb(94, 43, 2);"
+                        class="dropdown-item"
+                        href="/admin/status-change?status=dispatched&id={{this._id}}"
+                      >Dispatched</a> --}}
+
+                      <a
+                        style="color: red;"
+                        class="dropdown-item"
+                        href="/admin/status-change?status=cancel&id={{this._id}}"
+                      >Cancel</a>
+                      {{!-- <a
+                        style="color: green;"
+                        class="dropdown-item"
+                        href="/admin/status-change?status=delivered&id={{this._id}}"
+                      >Delivered</a> --}}
+                    </div>
+                  </div>
+                </td>
+              {{/if}}
+
+              {{#if this.proccessingStatus}}
+                <td>
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-primary dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      Proccessing
+                    </button>
+                    <div class="dropdown-menu">
+                      <a
+                        style="color: rgb(94, 43, 2);"
+                        class="dropdown-item"
+                        href="/admin/status-change?status=dispatched&id={{this._id}}"
+                      >Dispatched</a>
+
+                      <a
+                        style="color: red;"
+                        class="dropdown-item"
+                        href="/admin/status-change?status=cancel&id={{this._id}}"
+                      >Cancel</a>
+                    </div>
+                  </div>
+                </td>
+              {{/if}}
+
+              {{#if this.dispatchedStatus}}
+                <td>
+                  <div class="btn-group">
+                    <button
+                      type="button"
+                      class="btn btn-primary dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      dispatched
+                    </button>
+                    <div class="dropdown-menu">
+                      <a
+                        style="color: green;"
+                        class="dropdown-item"
+                        href="/admin/status-change?status=delivered&id={{this._id}}"
+                      >Delivered</a>
+
+                      <a
+                        style="color: red;"
+                        class="dropdown-item"
+                        href="/admin/status-change?status=cancel&id={{this._id}}"
+                      >Cancel</a>
+                    </div>
+                  </div>
+                </td>
+              {{/if}}
+              {{#if this.deliveryStatus}}
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-success">
+                      Delivered
+                    </button>
+                  </div>
+                </td>
+              {{/if}}
+              {{#if this.cancelStatus}}
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-danger">
+                      Cancelled
+                    </button>
+                  </div>
+                </td>
+              {{/if}}
+              {{#if this.returnStatus}}
+              <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn  btn-warning">
+                      Order Return
+                    </button>
+                  </div>
+                </td>
+{{/if}}
+              
+              
+
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+    </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function () { $('#usersTable').dataTable(); });
+</script>
+
+{{!--
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+
+
+
+<div class="main_content_iner overly_inner ">
+  <div class="container-fluid bg-white mt-5  p-5 " style="border-radius: 25px; ">
+    <div class="mt-3 row">
+      <h2 class="text-center" style="color: black;">WatchO= Orders</h2>
+
+      {{#each allOrders}}
+      <div class=" row py-3 mr-0 ml-auto mt-3 " style="background-color: rgb(248, 248, 248);  max-width: 45rem;">
+
+
+        <div class="mt-3 row py-3 mr-0 ml-auto" style="background-color: rgb(248, 248, 248);  max-width: 45rem;">
+
+
+          <div class="col-6 pl-sm-4">
+
+            <h6 class=" text-truncate">{{this.date}}</h6>
+            <p class=" text-truncate">Address : {{this.deliveryDetails.address}}</p>
+            <p class="">Mobile number : {{this.deliveryDetails.mobile}}</p>
+            <p class="">Total Amount : Rs. {{this.totalAmount}} Only</p>
+            <p class="">Payment Method : {{this.paymentMethod}}</p>
+
+            <p class="">Status : {{this.status}}</p>
+
+            <td>
+              <a href="/view-order-products/{{this._id}}" class="btn  btn-outline-info">view products</a>
+            </td>
+            <div>
+              <button class="btn  essence-btn  btn-outline-info mt-2" onclick="cancelorder('{{this._id}}')">Cancel
+                Order</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+      {{/each}}
+
+    </div>
+  </div>
+</div> --}}

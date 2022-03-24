@@ -1,0 +1,59 @@
+<section class="main">
+    <div class="layer">
+
+        <div class="bottom-grid">
+            <div class="logo">
+                <h1> <a href="/">WatchO=</a></h1>
+            </div>
+            <div class="links">
+                <ul class="links-unordered-list">
+                    <li>
+                        <h1 style="color: rgb(163, 161, 161);">Don't Have an Account? </h1>
+                        {{!-- <a href="#" class="">Don't Have an Account? </a> --}}
+                    </li>
+                    <li class="active">
+                        <a href="/signup" class="">Register here</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-w3ls">
+
+            <div class="content-bottom">
+                <form action="/login" method="post">
+                    <div class="field-group">
+                        <span class="fa fa-user" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="email" id="text1" type="email" value="" placeholder="Email" required>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="password" id="myInput" type="Password" placeholder="Password">
+                        </div>
+                        <span style="color: rgb(189, 0, 0); margin-left: 10px;">{{err}}</span>
+                    </div>
+                    <div class="wthree-field">
+                        <button type="submit" class="btn">Get Started</button>
+                    </div>
+                    {{#if error}}
+                    <p class="error pt-2 pl-5" style=" font-weight: bold; color: rgb(189, 0, 0); padding-top: 17px; padding-left: 75px; font-weight: bold; font-size: large;">{{error}}</p>
+
+                    {{/if}}
+
+                </form>
+                <div>
+                    <h1 style="text-align: center; padding-top: 7.5px; color: white;">Or</h1>
+                    <div class="wthree-field">
+                        <a href="/login/login-mobile"><button class="btn">Login with OTP</button></a>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

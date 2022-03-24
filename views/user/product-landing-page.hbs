@@ -1,0 +1,159 @@
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/side-style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<style>
+  
+
+
+
+
+
+
+
+  .imgkey-product-landing-page {
+    width: 87px;
+    height: 87px;
+    border: 1px solid #ddd;
+    margin-right: 12px;
+    margin-top: 10px;
+  }
+
+  .previewPane-product-landing-page {
+    display: inline-block;
+    border: 1px solid #ddd;
+    width: 16.325rem;
+    height: 20.275rem;
+    cursor: crosshair;
+    margin-right: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%
+  }
+
+  #zoomer-product-landing-page {
+    display: none;
+    background-repeat: no-repeat;
+    border: 1px solid #ddd;
+    width: 16.325rem;
+    height: 20.275rem;
+
+  }
+</style>
+
+
+
+
+<div class="mx-5 d-md-flex align-items-stretch">
+  <!-- Page Content  -->
+  <div id="content" class="ml-lg-4">
+    <div class="">
+      <div class="container-fluid">
+        <div class="main-body">
+          <div class="row  mx-auto justify-content-center">
+            <div
+              class="col-lg-3 col-md-12 col-sm-12 mb-3  d-none d-lg-block d-flex text-center mx-auto justify-content-center">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                    <div class="mt-3 pt-5">
+                      <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_ltuxwdw4.json"
+                        background="transparent" speed="1" style="width: 250px; height: 250px;" loop autoplay>
+                      </lottie-player>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 m-0 col-sm-12  mx-auto justify-content-center">
+              <div class="mt-3 py-3 mr-0 mb-3 m-0 justify-content-center"
+                style="background-color: rgb(248, 248, 248); ">
+                <div class="image-container container-fluid " style="width: fit-content;">
+                  <div class="thumbnail-container ml-2">
+                  </div>
+                  <div class="detail ">
+                    <section>
+                      <h3 style="font-weight: bold; color: #4f525f;">{{product.name}}</h3>
+                      <div class="row container-fluid">
+                        <div class="col previewPane-product-landing-page  d-none d-lg-block d-md-block"></div>
+                        <div class="col d-none d-lg-block d-md-block " id="zoomer-product-landing-page"></div>
+                      </div>
+                      <div class="imgline ">
+                        <img class="imgkey-product-landing-page " src="/images/product/{{product._id}}image1.jpg">
+                        <img class="imgkey-product-landing-page " src="/images/product/{{product._id}}image2.jpg">
+                        <img class="imgkey-product-landing-page " src="/images/product/{{product._id}}image3.jpg">
+                        <img class="imgkey-product-landing-page" src="/images/product/{{product._id}}image4.jpg">
+                        <img class="imgkey-product-landing-page" src="/images/product/{{product._id}}image5.jpg">
+                      </div>
+                      <p class=" mt-4">{{product.description}}</p>
+                      <p class="">{{product.category}} Watches</p>
+                      <p class="">{{product.subcategory}}</p>
+                      {{#if product.OldPrice}}
+                      <p class="">{{product.OldPrice}} Rs.</p>
+                      <p style="color: rgb(226, 3, 3); font-size: large;">Now you get on Rs.
+                        {{product.price}} enjoy!</p>
+                      {{else}}
+                      <p class="">{{product.price}} Rs. only</p>
+                      {{/if}}
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 text-center mx-auto justify-content-center ">
+              <nav id="sidebar" class="  mr-4 mt-3 text-center mx-auto justify-content-center">
+                <div class="p-4 pt-5 sticky-top mt-5">
+                  <div class="mb-5 sticky-top ">
+                    <h4>WatchO Fashion Store</h4>
+                    <h3>hi,<span style="text-transform: capitalize; color: rgb(11, 11, 131);"> {{user.name}}</span></h3>
+                    <h5>It’s your time</h5>
+                    {{#if user}}
+                    <button onclick="addToCart('{{product._id}}')" class="btn btn btn-outline-success w-100">Add to
+                      cart</button>
+                    <button onclick="addToWishlist('{{product._id}}')"
+                      class="btn btn btn-outline-success w-100 mt-2">Add to
+                      wishlist</button>
+                    {{else}}
+                    <a href="/login"><button class="btn btn btn-outline-success w-100">Add to
+                        cart</button></a>
+                    <a href="/login"><button class="btn btn btn-outline-success w-100 mt-2">Add to
+                        wishlist</button></a>
+                    {{/if}}
+                  </div>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<script>
+  $(function () {
+    $('.previewPane-product-landing-page, #zoomer-product-landing-page').css('background-image', 'url(' + $('.imgkey-product-landing-page').first().attr('src') + ')');
+    $('.imgkey-product-landing-page').click(function () {
+      $('.previewPane-product-landing-page').css('background-image', 'url(' + $(this).attr('src') + ')');
+    });
+    $('.previewPane-product-landing-page').mousemove(function (ev) {
+      $('#zoomer-product-landing-page').css('display', 'inline-block');
+      var img = $(this).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+      var posX = ev.offsetX ? (ev.offsetX) : ev.pageX - $(this).offset().left;
+      var posY = ev.offsetY ? (ev.offsetY) : ev.pageY - $(this).offset().top;
+      $('#zoomer-product-landing-page').css('background-position', ((-posX * 3) + "px " + (-posY * 3) + "px"));
+      $('#zoomer-product-landing-page').css('background-image', 'url(' + img + ')');
+    });
+    $('.previewPane-product-landing-page').mouseleave(function () { $('#zoomer-product-landing-page').css('display', 'none'); });
+  });
+</script>
+
+
+
+
+
+<script src="/javascripts/side-bootstrap.min.js"></script>
+<script src="/javascripts/side-jquery.min.js"></script>
+<script src="/javascripts/side-main.js"></script>
+<script src="/javascripts/side-popper.js"></script>

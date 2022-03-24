@@ -1,0 +1,89 @@
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/stylesheets/side-style.css">
+
+<div class="mx-5 d-md-flex align-items-stretch">
+  <!-- Page Content  -->
+
+  <div id="content" class="p-4 p-md-5 pt-5 ml-lg-4">
+
+    <div class="d-flex justify-content-center">
+
+      <img src="/images/order-success2.JPG" style="width: 50%; " alt="">
+
+
+    </div>
+    <div class="d-flex justify-content-center">
+      <h3>Order Placed <span style="color: green; font-weight: bold;">Succesfully !</span></h3>
+
+    </div>
+
+
+    <div class="d-flex justify-content-center mt-2">
+      <a href="/orders" class="btn btn btn-outline-success ">view orders</a>
+    </div>
+  </div>
+
+
+
+
+
+  <nav id="sidebar" class="d-none d-lg-block position-relative  mr-4 mt-3">
+    <div class="p-4 pt-5 sticky-top mt-5">
+      <div class="mb-5 sticky-top ">
+        <h4>WatchO Fashion Store</h4>
+
+        {{!-- <h3>hi,<span style="text-transform: capitalize;"> {{user.name}}</span></h3> --}}
+        {{#if products}}
+        <h5>Total price Rs.<span id="total">{{total}}</span>only</h5>
+
+        <a href="/place-order" class="btn btn btn-outline-success w-100">Place Order</a>
+        {{else}}
+
+
+        <h5>Great!!!</h5>
+        <h5>Your just purchased <span style="font-weight: bold;">Quality</span> </h5>
+
+        <a href="/" class="btn btn btn-outline-success w-100">findOut More </a>
+
+        {{/if}}
+      </div>
+
+
+    </div>
+  </nav>
+
+</div>
+<script>
+  function changeQuantity(cartId, proId, userId, count) {
+    let quantity = parseInt(document.getElementById(proId).innerHTML)
+    count = parseInt(count)
+    $.ajax({
+      url: '/change-product-quantity',
+      data: {
+        user: userId,
+        cart: cartId,
+        product: proId,
+        count: count,
+        quantity: quantity
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.removeProduct) {
+          alert('product Removed from cart')
+          location.reaload()
+        } else {
+          document.getElementById(proId).innerHTML = quantity + count
+          document.getElementById('total').innerHTML = response.total
+
+        }
+      }
+    })
+  }
+</script>
+
+<script src="/javascripts/side-bootstrap.min.js"></script>
+<script src="/javascripts/side-jquery.min.js"></script>
+<script src="/javascripts/side-main.js"></script>
+<script src="/javascripts/side-popper.js"></script>

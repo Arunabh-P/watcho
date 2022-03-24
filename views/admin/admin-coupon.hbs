@@ -1,0 +1,86 @@
+<div class="main_content_iner overly_inner">
+  <div class="container-fluid bg-white mt-5 p-5" style="border-radius: 25px; ">
+    <h2 class="text-center" style="color: black;">WatchO= Coupons</h2>
+    <div class="d-flex justify-content-end">
+      <div class="row flex-9">
+        <div>
+          <div class="justify-content-end">
+            <a href="/admin/add-coupons" class="btn btn-success">Add Coupons</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <table
+        class="table table-responsive-xs table-responsive-sm table-striped table-hover mt-3"
+        id="usersTable"
+        style="border: 1px solid rgb(8, 8, 8);
+   border-radius: 18px;"
+      >
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Coupon</th>
+            <th scope="col">Description</th>
+            <th scope="col">Discount</th>
+            <th scope="col">Expired on</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each coupons}}
+            <tr>
+              <td>{{incm @index}}</td>
+              <td>{{this.couponcode}}</td>
+              <td>{{this.description}}</td>
+              <td>{{this.discount}} %</td>
+              <td>{{this.expiry}}</td>
+
+              <td class="text-end">
+                <a
+                  href="/admin/delete-coupon/{{this._id}}"
+                  class="btn btn-danger"
+                  onclick="return two(this,event)"
+                ><i
+                    style="color: rgb(255, 255, 255);"
+                    class="far fa-trash-alt"
+                  ></i></a>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+<script>
+  $(function () { $('#usersTable').dataTable(); });
+</script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+          function two(url,e) {
+              e.preventDefault()
+              swal({
+                  title: "Are you sure?",
+                  text: "Once removed, you won't be able to retrive it! ",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                })
+                .then((willDelete) => {
+                  
+                  if (willDelete) {
+                    
+                    window.location.href= url.href
+               
+      
+                  } else {
+                    swal("your Coupon is safe!");
+                  }
+                });
+      
+      
+      }
+      </script>

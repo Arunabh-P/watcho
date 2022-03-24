@@ -1,0 +1,165 @@
+<div class="container  mt-5  p-5" style="border-radius: 25px; ">
+  <div class="row">
+    <div class="card mt-5 col-lg-5 shadow p-3 mb-5 bg-body rounded">
+      <div class="card-header">
+        Add category
+      </div>
+      <div class="card-body">
+        <form action="/admin/add-category" id="addcategory" method="post">
+          <label for="">Enter category</label>
+          <input type="text" name="category">
+          <button type="submit" class="btn btn-primary">Add</button>
+          <p style="color: red;">{{categoryExistError}}</p>
+        </form>
+        <form action="/admin/delete-category" id="deletecategory" method="post">
+          <label for="">Delete category</label>
+          <select name="category">
+            {{#each categoryData}}
+            <option>{{this.category}}</option>
+            {{/each}}
+          </select><br>
+          <a class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</a>
+        </form>
+
+
+
+      </div>
+    </div>
+    <div class="col-lg-2"></div>
+    <div class="card mt-5 col-lg-5 shadow p-3 mb-5 bg-body rounded">
+      <div class="card-header">
+        Add sub category
+      </div>
+      <div class="card-body">
+        <form action="/admin/add-subcategory" id="subcategoryformvalidation" method="post">
+          <label for="">Select category</label>
+
+          <select name="categorySubcategory">
+            {{#each categoryData}}
+            <option>{{this.category}}</option>
+            {{/each}}
+          </select><br>
+          <input type="text" name="subcategory" class="mt-4"><br>
+          <button type="submit" class="btn btn-primary  mt-3">Add sub category</button>
+          <p style="color: red;">{{subcategoryExistError}}</p>
+        </form>
+      </div>
+    </div>
+
+
+    <div class="container-fluid bg-white mt-5  p-5 " style="border-radius: 25px; ">
+      <h2 class="text-center" style="color: black;">WatchO= Exclusive Products</h2>
+
+      <table class="table table-responsive-xs table-responsive-sm table-striped table-hover mt-3" id="usersTable" style="border: 1px solid rgb(3, 3, 3);
+   border-radius: 18px;">
+        <thead>
+          <tr >
+            <th scope="col">No</th>
+            <th scope="col">Category</th>
+            <th scope="col">Subcategory</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+          {{#each categoryData}}
+          <tr >
+            <td scope="row">{{incm @index}}</td>
+            <td>{{this.category}}</td>
+
+            <td>
+              <ul>
+                {{#each subcategory}}
+                <li>{{this}} <a href="/admin/delete-subcategory?category={{../this.category}}&subcategory={{this}}"><i
+                      style="color: red;" class="far fa-trash-alt"></i></a></li>
+                {{/each}}
+              </ul>
+            </td>
+
+          </tr>
+
+
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Delete category</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body" id="modal-body-id">
+
+        Are you sure do you want to delete this category
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button onclick="deletecategory()" id="deletecategory" type="button" class="btn btn-primary">yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal  for subcategory delete-->
+
+
+
+<script>
+  $("#subcategoryformvalidation").validate({
+    rules: {
+      subcategory: {
+        required: true,
+      },
+    },
+  });
+
+  function formCategory() {
+    var x = document.getElementById("categorychange").value;
+
+    $.ajax({
+      url: "/admin/select-category-for-form?category=" + x,
+      method: "get",
+      success: (response) => {
+        if (response) {
+          let arrayCounts = response.subcategory.length;
+          var suboptions;
+          let arrayValues = response.subcategory;
+
+          var suboptions = "<option value='0'>select</option>";
+          for (var i = 0; i < arrayCounts; i++) {
+            suboptions +=
+              "<option value='" +
+              arrayValues[i] +
+              "'>" +
+              arrayValues[i] +
+              "</option>";
+          }
+          document.getElementById("formsubcategory").innerHTML = suboptions;
+        }
+      },
+    });
+  }
+
+  function deletecategory() {
+    document.getElementById("deletecategory").submit();
+  }
+</script>
+<script>
+    $(function () {
+        $('#usersTable').dataTable();
+    });
+</script>

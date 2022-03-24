@@ -1,0 +1,289 @@
+<link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<link href=" https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
+
+
+
+
+<div class="main_content_iner overly_inner">
+  <div class="container-fluid bg-white mt-5 p-5" style="border-radius: 25px; ">
+
+    <div class="content-header container-fluid mt-4">
+      <p class="admin-logo text-center pt-4">SALES REPORT</p>
+    </div>
+    <div class="col-12">
+      <form id="salesDate-form">
+        <div class="col-12">
+    <form id="salesDate-form">
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row align-items-center">
+                    <div class="col col-check flex-grow-0">
+
+                    </div>
+                    <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <select class="form-select d-inline-block" id="status_sales" style="max-width: 200px"
+                            onchange="getNewSale()">
+                            <option>Select</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+
+                        </select>
+                    </div>
+
+
+                    <div class="col-md-2 col-6">
+                        <input type="date" id="exp_date1" name="from" class="form-control" required>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <input type="date" id="exp_date2" name="to" class="form-control" required>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <button class='btn btn-primary me-md-2' type="submit">Submit</button>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </form>
+    </div>
+    </form>
+    </div>
+    <table id="example" class="table table-responsive-xs table-responsive-sm table-responsive-md table-responsive-lg table-striped table-hover mt-3" style="border: 1px solid rgb(12, 12, 12);
+   border-radius: 15px;">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th scope="col">order ID</th>
+            <th scope="col">User ID</th>
+            <th scope="col">Payment</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Date</th>
+
+          </tr>
+        </thead>
+        <tbody id="examplebody">
+           {{#each salesreport}}
+        <tr>
+            <td>{{incm @index}}</td>
+            <td>{{_id}}</td>
+            <td>{{userId}}</td>
+            <td><span class="badge rounded-pill alert-success">{{paymentMethod}}</span></td>
+            <td>₹ {{totalAmount}}</td>
+            <td>{{date}}</td>
+        </tr>
+        {{/each}}
+        </tbody>
+
+      </table>
+    
+
+  </div>
+</div>
+
+<script>
+
+    var today = new Date();
+    let tom = String(today.getDate() + 1).padStart(2, '0');
+    var dd = String(today.getDate() ).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+    today = yyyy + '-' + mm + '-' + dd;
+    tommor = yyyy + '-' + mm + '-' + tom;
+    $('#exp_date1').attr('max', today);
+    $('#exp_date2').attr('max', tommor);
+    document.getElementById('exp_date1').onchange = e => {
+        value = e.target.value
+        $('#exp_date2').attr('min', value);
+    }
+
+
+
+
+
+
+
+
+
+
+    let table;
+
+    $("#salesDate-form").submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: "/admin/salesreport/report",
+            method: "post",
+            data: $("#salesDate-form").serialize(),
+            success: (response) => {
+                console.log(response)
+                if (response.report) {
+                    table.destroy();
+                    document.getElementById('examplebody').innerHTML = ' '
+
+                    for (let i = 0; i < response.report.length; i++) {
+                        newelement = `<tr>
+                            <td>${i + 1}</td>
+                        <td> ${response.report[i]._id} </td>
+                         <td> ${response.report[i].userId} </td>
+                          <td><span class="badge rounded-pill alert-success"> ${response.report[i].paymentMethod}</span> </td>
+                           <td> ${response.report[i].totalAmount} </td>
+                            <td> ${response.report[i].date} </td>
+                        </tr>`
+
+                        document.getElementById('examplebody').innerHTML += newelement
+                    }
+                    table = $('#example').DataTable({
+                        "footerCallback": function (row, data, start, end, display) {
+                            var api = this.api(), data;
+
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function (i) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '') * 1 :
+                                    typeof i === 'number' ?
+                                        i : 0;
+                            };
+
+                            // Total over all pages
+                            total = api
+                                .column(4)
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+                            // Update footer
+                            $(api.column(4).footer()).html(
+                                ' ( $' + total + ' total)'
+                            );
+                        },
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'excel', 'pdf', 'print'
+                        ],
+                        drawCallback: function () {
+                            var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+                            $('.buttons-excel')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                            $('.buttons-pdf')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                            $('.buttons-print')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                        }
+
+
+                    });
+
+                }
+
+            }
+        })
+    })
+
+    function getNewSale() {
+        let stat = document.getElementById('status_sales').value
+        $.ajax({
+            url: '/admin/salesreport/monthlyreport',
+            data: {
+                type: stat
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.wmyreport) {
+                    table.destroy()
+                    document.getElementById('examplebody').innerHTML = ' '
+                    for (let i = 0; i < response.wmyreport.length; i++) {
+                        newelement = `<tr>
+                            <td>${i + 1}</td>
+                        <td> ${response.wmyreport[i]._id} </td>
+                         <td> ${response.wmyreport[i].userId} </td>
+                          <td><span class="badge rounded-pill alert-success"> ${response.wmyreport[i].paymentMethod}</span> </td>
+                           <td> ${response.wmyreport[i].totalAmount} </td>
+                            <td> ${response.wmyreport[i].date} </td>
+                        </tr>`
+                        document.getElementById('examplebody').innerHTML += newelement
+                    }
+                    table = $('#example').DataTable({
+                        "footerCallback": function (row, data, start, end, display) {
+                            var api = this.api(), data;
+
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function (i) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '') * 1 :
+                                    typeof i === 'number' ?
+                                        i : 0;
+                            };
+
+                            // Total over all pages
+                            total = api
+                                .column(4)
+                                .data()
+                                .reduce(function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+
+                            // Update footer
+                            $(api.column(4).footer()).html(
+                                ' ( $' + total + ' total)'
+                            );
+                        },
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'excel', 'pdf', 'print'
+                        ],
+                        drawCallback: function () {
+                            var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+                            $('.buttons-excel')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                            $('.buttons-pdf')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                            $('.buttons-print')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                        }
+                    });
+
+                }
+            }
+        })
+    }
+
+
+    $(document).ready(function () {
+        table = $('#example').DataTable({
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                // Total over all pages
+                total = api
+                    .column(4)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+
+                // Update footer
+                $(api.column(4).footer()).html(
+                    ' ( $' + total + ' total)'
+                );
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'excel', 'pdf', 'print'
+            ],
+            drawCallback: function () {
+                var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+                $('.buttons-excel')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons-pdf')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                $('.buttons-print')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+            }
+        });
+    });
+</script>

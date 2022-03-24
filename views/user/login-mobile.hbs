@@ -1,0 +1,42 @@
+<section class="main">
+    <div class="layer ">
+
+        <div class="bottom-grid ">
+            <div class="logo">
+                <h1> <a href="/">WatchO=</a></h1>
+            </div>
+            <div class="links">
+                <ul class="links-unordered-list">
+                    <li >
+                        <h1 style="color: rgb(163, 161, 161);">Don't Have an Account? </h1>
+                        {{!-- <a href="#" class="">Don't Have an Account? </a> --}}
+                    </li>
+                    <li class="active">
+                        <a href="/signup" class="">Register here</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-w3ls ">
+            <div class="content-bottom">
+                <form action="/login/otp" method="post">
+                
+                    <div class="field-group">
+                        
+                        <span class="fa fa-user" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="number" id="text1" type="text" value="" placeholder="Mobile number" required>
+                        </div>
+                    </div>
+                    <div class="wthree-field">
+                        <button  type="submit" class="btn">Generate OTP</button>
+                    </div>
+                    {{#if Moberr}}
+                    <p class="error pt-4 pl-5" style="padding-left: 25px; font-weight: bold; color: rgb(189, 0, 0);">{{Moberr}}</p>
+                    {{/if}}
+                </form>
+            </div>
+        </div>
+  
+    </div>
+</section>

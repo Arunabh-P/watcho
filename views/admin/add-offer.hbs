@@ -1,0 +1,136 @@
+{{!-- <div class="main_content_iner overly_inner">
+  <div class="container-fluid bg-white mt-5 p-5" style="border-radius: 25px; ">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <form  action="/admin/add-offer" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+              <label class="form-label">Product</label>
+              <select name="product" class="form-select" id="productname">
+                <option value="">select</option>
+                {{#each products}}
+                  <option value="{{this.name}}">{{this.name}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="col-6 mb-6">
+              <label class="form-label">Offer %</label>
+              <input
+                class="form-control"
+                id="pvalue"
+                name="offer"
+                type="number"
+                placeholder="Type here"
+                required
+              />
+              <p id="cvalueerr" class="text-danger"></p>
+
+            </div>
+            <div class="col-lg-6 mb-6">
+              <label class="form-label">Expiry</label>
+              <input
+                class="form-control"
+                id="exp_date"
+                name="expiry"
+                type="date"
+                required
+              />
+            </div>
+
+            <div class="d-grid p-2">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <p id="error-message" class="text-danger"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function () { $('#usersTable').dataTable(); });
+</script>
+
+
+
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"
+  integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk="
+  crossorigin="anonymous"
+></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
+  integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg="
+  crossorigin="anonymous"
+/>
+
+<script>
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    $('#exp_date').attr('min', today);
+
+    $(document).ready(function () {
+        $('#productname').selectize({
+            sortField: 'text'
+        });
+    });
+
+    let cvalue;
+    $('#pvalue').on('input', function () {
+        this.value = this.value.replace(/[^0-9]/, '').replace(/(\..*)\./, '$1');
+        var phone = $(this).val()
+        if (phone.length > 2) {
+            cvalue = false;
+            $("#cvalueerr").html("offer should be less than 99%");
+
+        } else {
+            cvalue = true;
+            $("#cvalueerr").html(" ");
+
+        }
+    })
+
+
+
+
+
+
+
+
+    $('#getproducts').on("submit", (e) => {
+        if (cvalue == true) {
+            console.log("api")
+            $.ajax({
+                url: "/admin/productoffer/placeprodoffer",
+                method: "post",
+                data: $("#getproducts").serialize(),
+                success: function (response) {
+                    if (response) {
+                        // alert("Form submitted successfully")
+                        location.reload()
+                    } else {
+
+                    }
+
+                },
+                error: function (err) {
+                    // alert("Something Error")
+                }
+            })
+        } else {
+            $("#error-message").html("Fill the Fields");
+        }
+    })
+
+
+
+
+
+
+</script> --}}

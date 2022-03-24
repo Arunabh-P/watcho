@@ -1,0 +1,50 @@
+ <div class="main_content_iner overly_inner ">
+    <div class="container-fluid bg-white mt-5  p-5 " style="border-radius: 25px; ">
+        <div class="d-flex justify-content-end">
+            <div class="row flex-9 ">
+                <div>
+
+                    <div class="justify-content-end">
+
+                        <a href="/admin/add-baner" class="btn btn-success">Add Banner</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+
+            <table class="table table-responsive-xs table-responsive-sm table-responsive-md table-responsive-lg table-striped table-hover mt-3 " id="usersTable" style="border: 1px solid rgb(0, 0, 0);
+   border-radius: 18px;">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+
+                        <th scope="col">Name</th>
+                        <th scope="col">image</th>
+                        {{!-- <th scope="col">Options</th> --}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each baner}}
+                    <tr >
+                        <td>{{incm @index}}</td>
+                        <td>{{this.name}}</td>
+                        <td><img style="width: 500px; height: 100px;" src="/baner-images/{{this._id}}.jpg" alt=""></td>
+                        {{!-- <td>
+                            <a href="/admin/edit-baner/{{this._id}}" class="btn btn-primary">Edit</a>
+                            <a href="/admin/delete-exclusive-products/{{this._id}}" class="btn btn-danger"
+                                onclick="return confirm('Do you want to delete{{this.name}}?')">D</a>
+                        </td> --}}
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#usersTable').dataTable();
+    });
+</script>

@@ -1,0 +1,183 @@
+<section class="main">
+	<div class="layer">
+
+		<div class="bottom-grid">
+			<div class="logo">
+				<h1> <a href="/">WatchO=</a></h1>
+			</div>
+			<div class="links">
+				<ul class="links-unordered-list">
+					<li>
+						<h1 style="color: rgb(163, 161, 161);">Already Have an Account? </h1>
+					</li>
+					<li class="active">
+						<a href="/login" class="">Login here</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="content-w3ls">
+			<div class="content-bottom">
+				<form action="/signup" id="registration_form" method="post">
+					<div class="field-group">
+						<span class="fa fa-user" aria-hidden="true"></span>
+						<div class="wthree-field">
+							<input name="name" id="form_name" type="text" value="" placeholder="Name">
+							 <span class="error_form" id="name_error_message"></span>
+						</div>
+					</div>
+					<div class="form-wrapper ">
+						<label for="" style="color: white;">Gender</label><br>
+						<div class="form-check form-check-inline pt-3 pb-3">
+							<input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="Male"
+								checked>
+							<label style="color: white;" class="form-check-label" for="inlineRadio1">Male</label>
+						</div>
+						<div class="form-check form-check-inline pt-3 pb-3">
+							<input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="Female">
+							<label style="color: white;" class="form-check-label" for="inlineRadio1">Female</label>
+						</div>
+					</div>
+					<div class="field-group">
+						<span class="fa fa-mobile" aria-hidden="true"></span>
+						<div class="wthree-field">
+							<input name="mobile" id="form_mob" type="number" value="" placeholder="Mobile" >
+							<span class="error_form" id="mob_error_message"></span>
+						</div>
+					</div>
+
+					<div class="field-group">
+						<span class="fa fa-envelope" aria-hidden="true"></span>
+						<div class="wthree-field">
+							<input name="email" id="form_email" type="email" value="" placeholder="Email" >
+							<span class="error_form" id="email_error_message"></span>
+						</div>
+					</div>
+
+					<div class="field-group">
+						<span class="fa fa-lock" aria-hidden="true"></span>
+						<div class="wthree-field">
+							<input name="password" id="form_password" type="Password" placeholder="Password" required>
+							<span class="error_form" id="password_error_message"></span>
+
+						</div>
+					</div>
+
+
+					<div class="wthree-field">
+						<button type="submit" class="btn">Register Now</button>
+					</div>
+					<div style="color: rgb(247, 0, 0); padding-top: 17px; padding-left: 45px; font-weight: bold; font-size: large; ">
+					{{#if signupErr}}
+					{{signupErr}}
+					{{/if}}
+					</div>
+				</form>
+
+			</div>
+		</div>
+
+	</div>
+</section>
+<script type="text/javascript">
+$("#name_error_message").hide()
+$("#email_error_message").hide()
+$("#mob_error_message").hide()
+$("#password_error_message").hide()
+
+
+var error_name=false;
+var error_email=false;
+var error_mobno=false;
+var error_password=false;
+
+
+   		 $("#form_name").focusout(function(){
+            check_name();
+         });
+         $("#form_email").focusout(function() {
+            check_email();
+         });
+         $("#form_mob").focusout(function() {
+            check_mob();
+         });
+		 $("#form_password").focusout(function() {
+            check_password();
+         });
+         function check_name() {
+            var pattern = /^[a-zA-Z]*$/;
+            var name = $("#form_name").val();
+            if (pattern.test(name) && name !== '') {
+               $("#name_error_message").hide();
+               $("#form_name")
+            } else {
+               $("#name_error_message").html("Should contain only Characters");
+               $("#name_error_message").show();
+               $("#form_name")
+               error_name = true;
+            }
+         }
+		 function check_password() {
+            var pattern = /^^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            var password = $("#form_password").val();
+            if (pattern.test(password) && password !== '') {
+               $("#password_error_message").hide();
+               $("#form_password")
+            } else {
+               $("#password_error_message").html("Minimum eight characters, at least one letter and one number:");
+               $("#password_error_message").show();
+               $("#form_password")
+               error_password = true;
+            }
+         }
+
+         function check_email() {
+            var pattern = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            var email = $("#form_email").val();
+            if (pattern.test(email) && email !== '') {
+               $("#email_error_message").hide();
+               $("#form_email")
+            } else {
+               $("#email_error_message").html("Invalid Email");
+               $("#email_error_message").show();
+               $("#form_email")
+               error_email = true;
+            }
+         }
+          function check_mob() {
+            var pattern = /([0-9]{10})|(\([0-9]{3}\)\s+[0-9]{3}\-[0-9]{4})/;
+            var mob= $("#form_mob").val();
+            if (pattern.test(mob) && mob !== ''&&mob.length==10) {
+               $("#mob_error_message").hide();
+               $("#form_mob")
+            } else {
+               $("#mob_error_message").html("Invalid Mobile NO");
+               $("#mob_error_message").show();
+               $("#form_mob")
+               error_mobno = true;
+            }
+         }
+
+         $("#registration_form").submit(function() {
+            error_name = false;
+            error_email = false;
+            error_mobno=false;
+            error_password=false;
+
+            check_name();
+            check_email();
+             check_mob();
+             check_password();
+
+            if (error_name === false  && error_email === false &&error_mobno===false &&error_password===false ) {
+               
+               return true;
+            } else {
+           swal("Oops!", "Please fill the Details!", "error");  
+               return false;
+        }
+         });
+     
+
+
+</script>
