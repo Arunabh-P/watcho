@@ -950,7 +950,7 @@ router.get("/wallet", verifyLogin, async function (req, res, next) {
   let user = req.session.user;
   let referId = user._id;
   let userId = user._id;
-  let referLink = `http://localhost:3000/signup/${referId}`;
+  let referLink = `https://arunabh.online/signup/${referId}`;
   let cartCount = null;
   if (req.session.user) {
     cartCount = await userHelpers.getCartCount(req.session.user._id);
